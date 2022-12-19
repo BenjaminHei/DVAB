@@ -70,12 +70,8 @@ def checkAttr():
                     if len(attributes_spell) > 1:
                         attributes_list.append(''.join(attributes_spell))
                         attributes_spell.clear()
-            print(dwarf_name_string)
             dwarf_name = dwarf_name_string.strip()
-            print(dwarf_name)
-            print(dwarf_title_string)
             dwarf_title = dwarf_title_string.strip()
-            print(attributes_list)
             dorfciv = []
             dorfciv.append(dwarf_name)
             dorfciv.append(dwarf_title)
@@ -113,12 +109,8 @@ def checkAttr():
                     if len(attributes_spell) > 1:
                         attributes_list.append(''.join(attributes_spell))
                         attributes_spell.clear()
-            print(dwarf_name_string)
             dwarf_name = dwarf_name_string.strip()
-            print(dwarf_name)
-            print(dwarf_title_string)
             dwarf_title = dwarf_title_string.strip()
-            print(attributes_list)
             dorfciv = []
             dorfciv.append(dwarf_name)
             dorfciv.append(dwarf_title)
@@ -156,12 +148,8 @@ def checkAttr():
                     if len(attributes_spell) > 1:
                         attributes_list.append(''.join(attributes_spell))
                         attributes_spell.clear()
-            print(dwarf_name_string)
             dwarf_name = dwarf_name_string.strip()
-            print(dwarf_name)
-            print(dwarf_title_string)
             dwarf_title = dwarf_title_string.strip()
-            print(attributes_list)
             dorfciv = []
             dorfciv.append(dwarf_name)
             dorfciv.append(dwarf_title)
