@@ -9,9 +9,8 @@ import numpy as np
 import time
 import string
 from stopwatch import Stopwatch
+from openpyxl import Workbook
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-
-
 citizen_info = (20,1006) #Dwarf portrait on lower left of screen location with (x,y) coordinates, used to bring up Creatures/Citizens, otherwise brought up with hotkey 'U'.
 magni_glass_list = [(478,196),(478,241),(478,286),(478,331),(478,376),(478,421),(478,466),(478,511),(478,556),(478,601),(478,646),(478,691),(478,736),(478,781),(478,826),(478,871),(478,916)] #This is the location of the magnifying glass associated with a dwarf in creatures/citizens table, used to open that particular dwarf's character dossier.
 quill = (1467,117) #Location of the quill in the Dwarf dossier to open up the name changer. Use this to get the dwarf_name_coords and dwarf_title_coords
@@ -21,12 +20,11 @@ attributes = (1247,249,1539,344) # Coordinate box for Dwarf attributes
 down_arrow = (1611,931)
 alphabet = set(string.ascii_letters) # tuple of uppercase and lowercase letters in alphabet
 population = 0
-
 fortress_population = []
 badlist = ['ovr metatetstty','Ualues sacrifice','Obst inate','Disdains hard vork','Ualues independence','Values decorun','High social avareness']
 goodlist = ['Good intuition','Values sacrifice','Obstinate','Disdains hard work','Values independence','Values decorum','High social awareness']
 stopwatch = Stopwatch()
-
+all_attributes = []
 def checkPop():
     global population
     if population == 0:
@@ -70,8 +68,12 @@ def checkAttr():
                     if len(attributes_spell) > 1:
                         attributes_list.append(''.join(attributes_spell))
                         attributes_spell.clear()
+            print(dwarf_name_string)
             dwarf_name = dwarf_name_string.strip()
+            print(dwarf_name)
+            print(dwarf_title_string)
             dwarf_title = dwarf_title_string.strip()
+            print(attributes_list)
             dorfciv = []
             dorfciv.append(dwarf_name)
             dorfciv.append(dwarf_title)
@@ -79,6 +81,8 @@ def checkAttr():
                 if trait in badlist:
                     goodListReplace = badlist.index(trait)
                     attributes_list[attributes_list.index(trait)] = goodlist[goodListReplace]
+            for attribute in attributes_list:
+                all_attributes.append(attribute)
             dorfciv.append(attributes_list)
             fortress_population.append(dorfciv)
         print(fortress_population)
@@ -109,8 +113,12 @@ def checkAttr():
                     if len(attributes_spell) > 1:
                         attributes_list.append(''.join(attributes_spell))
                         attributes_spell.clear()
+            print(dwarf_name_string)
             dwarf_name = dwarf_name_string.strip()
+            print(dwarf_name)
+            print(dwarf_title_string)
             dwarf_title = dwarf_title_string.strip()
+            print(attributes_list)
             dorfciv = []
             dorfciv.append(dwarf_name)
             dorfciv.append(dwarf_title)
@@ -118,6 +126,8 @@ def checkAttr():
                 if trait in badlist:
                     goodListReplace = badlist.index(trait)
                     attributes_list[attributes_list.index(trait)] = goodlist[goodListReplace]
+            for attribute in attributes_list:
+                all_attributes.append(attribute)
             dorfciv.append(attributes_list)
             fortress_population.append(dorfciv)
         for downClickz in range(1, population - 16):
@@ -148,8 +158,12 @@ def checkAttr():
                     if len(attributes_spell) > 1:
                         attributes_list.append(''.join(attributes_spell))
                         attributes_spell.clear()
+            print(dwarf_name_string)
             dwarf_name = dwarf_name_string.strip()
+            print(dwarf_name)
+            print(dwarf_title_string)
             dwarf_title = dwarf_title_string.strip()
+            print(attributes_list)
             dorfciv = []
             dorfciv.append(dwarf_name)
             dorfciv.append(dwarf_title)
@@ -157,18 +171,28 @@ def checkAttr():
                 if trait in badlist:
                     goodListReplace = badlist.index(trait)
                     attributes_list[attributes_list.index(trait)] = goodlist[goodListReplace]
+            for attribute in attributes_list:
+                all_attributes.append(attribute)
             dorfciv.append(attributes_list)
-            fortress_population.append(dorfciv)        
-                
-                
-            
+            fortress_population.append(dorfciv)
 
-                    
-
-            
+def writeToExcel():
+    workBook = Workbook()
+    workBookActive = workBook.active
+    workBookActive.cell(row=1,column=1).value = "Name"
+    for dwarfName in range(2, len(fortress_population)+2):
+        workBookActive.cell(row=dwarfName,column=1).value = str(fortress_population[dwarfName - 2][0])
+    for attrPos in range(2,len(all_attributes)+2):
+        workBookActive.cell(row=1,column=attrPos).value = str(all_attributes[attrPos-2])
+        for skillCheck in range(2,len(fortress_population)+2):
+            if all_attributes[attrPos-2] in fortress_population[skillCheck-2][2]:
+                workBookActive.cell(row=skillCheck,column=attrPos).value = "X"
+    workBook.save(filename='DorfFort.xlsx')
+                   
 checkPop()
 checkAttr()
-            
-            
-            
-            
+all_attributes = set(all_attributes)
+all_attributes = list(all_attributes)
+all_attributes.sort()
+print(all_attributes)
+writeToExcel()
